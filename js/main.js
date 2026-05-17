@@ -15,12 +15,18 @@
 
   // Mobile nav toggle
   if (toggle && links) {
+    const closeMenu = () => {
+      links.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
     toggle.addEventListener('click', () => {
-      links.classList.toggle('open');
+      const isOpen = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(isOpen));
     });
-    links.querySelectorAll('a').forEach(a =>
-      a.addEventListener('click', () => links.classList.remove('open'))
-    );
+    links.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.nav-inner') && links.classList.contains('open')) closeMenu();
+    });
   }
 
   // Active link highlighting
